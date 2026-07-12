@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediDrone - Product</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #fffdf6;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: linear-gradient(90deg, #ff7b00, #ffd60a);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin: 0 12px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .cart-btn {
+      background: #fff;
+      color: #ff7b00;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 15px;
+      flex: 1;
+    }
+
+    .product {
+      display: grid;
+      grid-template-columns: 1.1fr 1.2fr;
+      gap: 24px;
+    }
+
+    .gallery {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .gallery img {
+      width: 100%;
+      max-height: 360px;
+      object-fit: contain;
+    }
+
+    .thumbs {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .thumbs img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .details {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      padding: 18px;
+    }
+
+    h1 {
+      color: #ff7b00;
+      font-size: 22px;
+      margin: 0 0 8px;
+    }
+
+    .price {
+      color: #e36400;
+      font-weight: 700;
+      font-size: 20px;
+      margin: 10px 0;
+    }
+
+    .btn {
+      background: #ff7b00;
+      color: #fff;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .meta {
+      color: #777;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+
+      /* Navigation */
+      nav {
+        padding: 10px 15px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      nav .logo {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      nav ul {
+        width: 100%;
+        justify-content: center;
+        margin: 8px 0;
+        flex-wrap: wrap;
+      }
+
+      nav ul li {
+        margin: 0 8px 4px;
+      }
+
+      nav ul li a {
+        font-size: 14px;
+      }
+
+      .cart-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+        margin-top: 8px;
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Container */
+      .container {
+        margin: 20px auto;
+        padding: 0 10px;
+      }
+
+      /* Product Layout */
+      .product {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .gallery {
+        padding: 15px;
+      }
+
+      .gallery img {
+        max-height: 300px;
+      }
+
+      .thumbs {
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .thumbs img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .details {
+        padding: 15px;
+      }
+
+      h1 {
+        font-size: 20px;
+        margin: 0 0 6px;
+      }
+
+      .price {
+        font-size: 18px;
+        margin: 8px 0;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        margin-top: 15px;
+      }
+
+      .meta {
+        font-size: 12px;
+        margin-top: 8px;
+      }
+
+      /* Footer */
+      footer {
+        padding: 12px;
+        font-size: 12px;
+      }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 480px) {
+      nav {
+        padding: 8px 10px;
+      }
+
+      nav .logo {
+        font-size: 16px;
+      }
+
+      nav ul li {
+        margin: 0 6px 4px;
+      }
+
+      nav ul li a {
+        font-size: 12px;
+      }
+
+      .container {
+        padding: 0 5px;
+      }
+
+      .product {
+        gap: 15px;
+      }
+
+      .gallery {
+        padding: 12px;
+      }
+
+      .gallery img {
+        max-height: 250px;
+      }
+
+      .thumbs img {
+        width: 50px;
+        height: 50px;
+      }
+
+      .details {
+        padding: 12px;
+      }
+
+      h1 {
+        font-size: 18px;
+      }
+
+      .price {
+        font-size: 16px;
+      }
+
+      .btn {
+        padding: 12px;
+        font-size: 14px;
+      }
+
+      .meta {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">MediDrone</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+    <a href="cart.html" class="cart-btn">🛒 Cart</a>
+  </nav>
+
+  <div class="container">
+    <div id="root" class="product"></div>
+  </div>
+
+  <footer>
+    © 2025 MediDrone. Delivering Health with Drones 🚁
+  </footer>
+
+  <script type="module">
+    import { PRODUCTS, getProductById } from './js/products.js';
+
+    const FALLBACK_SVG = 'data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22320%22 height=%22240%22 viewBox=%220 0 320 240%22%3E%3Crect width=%22320%22 height=%22240%22 fill=%22%23fff6e5%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Poppins,Arial%22 font-size=%2220%22 fill=%22%23ff7b00%22%3ENo Image%3C/text%3E%3C/svg%3E';
+
+    function getParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    function getCart() { return JSON.parse(localStorage.getItem('cart') || '[]'); }
+    function setCart(c) { localStorage.setItem('cart', JSON.stringify(c)); }
+    function addToCart(product) {
+      const cart = getCart();
+      const existing = cart.find(i => i.id === product.id);
+      if (existing) existing.qty = Number(existing.qty || 1) + 1; else cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 });
+      setCart(cart);
+      const btn = document.getElementById('addBtn');
+      if (btn) { btn.textContent = 'Added ✓'; setTimeout(() => btn.textContent = 'Add to Cart', 900); }
+    }
+
+    function render(p) {
+      const root = document.getElementById('root');
+      if (!p) { root.innerHTML = '<p>Product not found.</p>'; return; }
+      const images = p.images && p.images.length ? p.images : [p.image];
+      const main = images[0];
+      root.innerHTML = `
+        <div class="gallery">
+          <img id="mainImg" src="${main}" alt="${p.name}" onerror="this.onerror=null;this.src='${FALLBACK_SVG}';" />
+          <div class="thumbs">
+            ${images.map(src => `<img src="${src}" alt="thumb" onclick="document.getElementById('mainImg').src='${src}'" onerror="this.onerror=null;this.src='${FALLBACK_SVG}';" />`).join('')}
+          </div>
+        </div>
+        <div class="details">
+          <h1>${p.name}</h1>
+          <div class="price">₹${Number(p.price).toFixed(2)}</div>
+          <p>${p.description || ''}</p>
+          <button id="addBtn" class="btn">Add to Cart</button>
+          <div class="meta">Category: ${p.tag || 'General'}</div>
+        </div>
+      `;
+      document.getElementById('addBtn').onclick = () => addToCart(p);
+    }
+
+    const id = getParam('id');
+    const product = getProductById(id);
+    render(product);
+  </script>
+</body>
+
+</html>

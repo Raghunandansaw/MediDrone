@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediDrone - Settings</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #fffdf6;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: linear-gradient(90deg, #ff7b00, #ffd60a);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin: 0 12px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .cart-btn {
+      background: #fff;
+      color: #ff7b00;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 24px auto;
+      padding: 0 15px;
+      flex: 1;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      padding: 18px;
+    }
+
+    h2 {
+      color: #ff7b00;
+      margin: 6px 0 14px;
+    }
+
+    .input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin: 6px 0 12px;
+      box-sizing: border-box;
+    }
+
+    .btn {
+      background: #ff7b00;
+      color: #fff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+
+      /* Navigation */
+      nav {
+        padding: 10px 15px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      nav .logo {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      nav ul {
+        width: 100%;
+        justify-content: center;
+        margin: 8px 0;
+        flex-wrap: wrap;
+      }
+
+      nav ul li {
+        margin: 0 8px 4px;
+      }
+
+      nav ul li a {
+        font-size: 14px;
+      }
+
+      .cart-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+        margin-top: 8px;
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Container */
+      .container {
+        margin: 20px auto;
+        padding: 0 10px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      h2 {
+        font-size: 20px;
+        margin: 6px 0 12px;
+      }
+
+      /* Form Rows */
+      .row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .row div {
+        margin-bottom: 15px;
+      }
+
+      /* Input Fields */
+      .input {
+        padding: 12px;
+        font-size: 16px;
+        margin: 8px 0 12px;
+      }
+
+      /* Buttons */
+      .btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin: 8px 0;
+      }
+
+      /* Footer */
+      footer {
+        padding: 12px;
+        font-size: 12px;
+      }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 480px) {
+      nav {
+        padding: 8px 10px;
+      }
+
+      nav .logo {
+        font-size: 16px;
+      }
+
+      nav ul li {
+        margin: 0 6px 4px;
+      }
+
+      nav ul li a {
+        font-size: 12px;
+      }
+
+      .container {
+        padding: 0 5px;
+      }
+
+      .card {
+        padding: 12px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .input {
+        padding: 10px;
+        font-size: 14px;
+      }
+
+      .btn {
+        padding: 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">MediDrone</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+    <a href="cart.html" class="cart-btn">🛒 Cart</a>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <h2>Account Settings</h2>
+      <div class="row">
+        <div>
+          <label>First Name</label>
+          <input id="firstName" class="input" placeholder="First Name">
+        </div>
+        <div>
+          <label>Last Name</label>
+          <input id="lastName" class="input" placeholder="Last Name">
+        </div>
+      </div>
+      <label>Phone</label>
+      <input id="phone" class="input" placeholder="Phone (+91...)" />
+      <button id="saveBtn" class="btn">Save Changes</button>
+      <div id="feedback" style="margin-top:8px; color:#444;"></div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 MediDrone. Delivering Health with Drones 🚁
+  </footer>
+
+  <script type="module">
+    import { auth, db } from './js/firebase.js';
+    import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+    const firstNameEl = document.getElementById('firstName');
+    const lastNameEl = document.getElementById('lastName');
+    const phoneEl = document.getElementById('phone');
+    const feedback = document.getElementById('feedback');
+    let currentUserId = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { window.location.href = 'login.html'; return; }
+      currentUserId = user.uid;
+      try {
+        const snap = await getDoc(doc(db, 'users', user.uid));
+        if (snap.exists()) {
+          const u = snap.data();
+          firstNameEl.value = u.firstName || '';
+          lastNameEl.value = u.lastName || '';
+          phoneEl.value = u.phone || '';
+        }
+      } catch (e) { console.warn('Load settings failed', e); }
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', async () => {
+      if (!currentUserId) return;
+      feedback.textContent = 'Saving...';
+      try {
+        await setDoc(doc(db, 'users', currentUserId), {
+          firstName: firstNameEl.value.trim(),
+          lastName: lastNameEl.value.trim(),
+          phone: phoneEl.value.trim(),
+          updatedAt: new Date()
+        }, { merge: true });
+        feedback.style.color = 'green';
+        feedback.textContent = '✅ Saved!';
+      } catch (e) {
+        feedback.style.color = 'crimson';
+        feedback.textContent = '❌ Failed: ' + (e.message || e);
+      }
+    });
+  </script>
+  <script type="module">
+    import { auth } from './js/firebase.js';
+    import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    function setLoggedInNavbar() {
+      const navUl = document.querySelector('nav ul');
+      if (!navUl) return;
+      navUl.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="#" id="logoutLink">Logout</a></li>
+      `;
+      const link = document.getElementById('logoutLink');
+      if (link) link.onclick = (e) => { e.preventDefault(); signOut(auth).then(() => location.href = 'login.html'); };
+    }
+    function setLoggedOutNavbar() {
+      const navUl = document.querySelector('nav ul');
+      if (!navUl) return;
+      navUl.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Signup</a></li>
+      `;
+    }
+    onAuthStateChanged(auth, (user) => { if (user) setLoggedInNavbar(); else setLoggedOutNavbar(); });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediDrone - Profile</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #fffdf6;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: linear-gradient(90deg, #ff7b00, #ffd60a);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin: 0 12px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .cart-btn {
+      background: #fff;
+      color: #ff7b00;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 24px auto;
+      padding: 0 15px;
+      flex: 1;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+      padding: 18px;
+    }
+
+    h2 {
+      color: #ff7b00;
+      margin: 6px 0 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 12px;
+      margin: 10px 0;
+    }
+
+    .label {
+      color: #777;
+    }
+
+    .value {
+      color: #333;
+      font-weight: 600;
+    }
+
+    .actions {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background: #ff7b00;
+      color: #fff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+
+      /* Navigation */
+      nav {
+        padding: 10px 15px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      nav .logo {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      nav ul {
+        width: 100%;
+        justify-content: center;
+        margin: 8px 0;
+        flex-wrap: wrap;
+      }
+
+      nav ul li {
+        margin: 0 8px 4px;
+      }
+
+      nav ul li a {
+        font-size: 14px;
+      }
+
+      .cart-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+        margin-top: 8px;
+        width: 100%;
+        text-align: center;
+      }
+
+      /* Container */
+      .container {
+        margin: 20px auto;
+        padding: 0 10px;
+      }
+
+      .card {
+        padding: 15px;
+      }
+
+      h2 {
+        font-size: 20px;
+        margin: 6px 0 12px;
+      }
+
+      /* Profile Rows */
+      .row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin: 12px 0;
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .label {
+        font-size: 12px;
+        color: #ff7b00;
+        font-weight: bold;
+        margin-bottom: 4px;
+      }
+
+      .value {
+        font-size: 14px;
+        color: #333;
+      }
+
+      /* Actions */
+      .actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        text-align: center;
+      }
+
+      /* Footer */
+      footer {
+        padding: 12px;
+        font-size: 12px;
+      }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 480px) {
+      nav {
+        padding: 8px 10px;
+      }
+
+      nav .logo {
+        font-size: 16px;
+      }
+
+      nav ul li {
+        margin: 0 6px 4px;
+      }
+
+      nav ul li a {
+        font-size: 12px;
+      }
+
+      .container {
+        padding: 0 5px;
+      }
+
+      .card {
+        padding: 12px;
+      }
+
+      h2 {
+        font-size: 18px;
+      }
+
+      .row {
+        margin: 10px 0;
+        padding: 6px 0;
+      }
+
+      .label {
+        font-size: 11px;
+      }
+
+      .value {
+        font-size: 13px;
+      }
+
+      .btn {
+        padding: 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">MediDrone</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+    </ul>
+    <a href="cart.html" class="cart-btn">🛒 Cart</a>
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      <h2>My Profile</h2>
+      <div class="row">
+        <div class="label">Name</div>
+        <div class="value" id="name">-</div>
+      </div>
+      <div class="row">
+        <div class="label">Email</div>
+        <div class="value" id="email">-</div>
+      </div>
+      <div class="row">
+        <div class="label">Phone</div>
+        <div class="value" id="phone">-</div>
+      </div>
+      <div class="row">
+        <div class="label">Member Since</div>
+        <div class="value" id="memberSince">-</div>
+      </div>
+      <div class="actions">
+        <a class="btn" href="settings.html">Account Settings</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 MediDrone. Delivering Health with Drones 🚁
+  </footer>
+
+  <script type="module">
+    import { auth, db } from './js/firebase.js';
+    import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+    function formatDate(ts) {
+      try { return ts?.toDate ? ts.toDate().toLocaleDateString() : new Date(ts).toLocaleDateString(); } catch { return '-'; }
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) { window.location.href = 'login.html'; return; }
+      document.getElementById('email').textContent = user.email || '-';
+      try {
+        const snap = await getDoc(doc(db, 'users', user.uid));
+        if (snap.exists()) {
+          const u = snap.data();
+          const fullName = `${u.firstName || ''} ${u.lastName || ''}`.trim() || (user.displayName || '-');
+          document.getElementById('name').textContent = fullName || '-';
+          document.getElementById('phone').textContent = u.phone || '-';
+          document.getElementById('memberSince').textContent = formatDate(u.createdAt) || '-';
+        } else {
+          document.getElementById('name').textContent = user.displayName || (user.email?.split('@')[0] || '-');
+        }
+      } catch (e) {
+        console.warn('Profile load failed', e);
+      }
+    });
+  </script>
+  <script type="module">
+    import { auth } from './js/firebase.js';
+    import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    function setLoggedInNavbar() {
+      const navUl = document.querySelector('nav ul');
+      if (!navUl) return;
+      navUl.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="#" id="logoutLink">Logout</a></li>
+      `;
+      const link = document.getElementById('logoutLink');
+      if (link) link.onclick = (e) => { e.preventDefault(); signOut(auth).then(() => location.href = 'login.html'); };
+    }
+    function setLoggedOutNavbar() {
+      const navUl = document.querySelector('nav ul');
+      if (!navUl) return;
+      navUl.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Signup</a></li>
+      `;
+    }
+    onAuthStateChanged(auth, (user) => { if (user) setLoggedInNavbar(); else setLoggedOutNavbar(); });
+  </script>
+</body>
+
+</html>

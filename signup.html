@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediDrone - Sign Up</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #fff0cc;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 30px;
+      background: linear-gradient(90deg, #ff7b00, #ffd60a);
+      color: #fff;
+    }
+
+    nav .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+    }
+
+    nav ul li {
+      margin: 0 12px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .signup-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      flex: 1;
+    }
+
+    .signup-box {
+      max-width: 450px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+    }
+
+    h2 {
+      text-align: center;
+      color: #ff7b00;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      background: #ff7b00;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background: #e36400;
+    }
+
+    #otp-status {
+      text-align: center;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+
+      /* Navigation */
+      nav {
+        padding: 10px 15px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      nav .logo {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      nav ul {
+        width: 100%;
+        justify-content: center;
+        margin: 8px 0;
+        flex-wrap: wrap;
+      }
+
+      nav ul li {
+        margin: 0 8px 4px;
+      }
+
+      nav ul li a {
+        font-size: 14px;
+      }
+
+      /* Signup Container */
+      .signup-container {
+        padding: 20px 15px;
+        min-height: calc(100vh - 120px);
+      }
+
+      .signup-box {
+        max-width: 100%;
+        padding: 25px 20px;
+        margin: 0;
+      }
+
+      h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .input-field {
+        padding: 14px;
+        font-size: 16px;
+        margin: 10px 0;
+      }
+
+      .btn {
+        padding: 14px;
+        font-size: 16px;
+        margin-top: 15px;
+      }
+
+      #otp-status {
+        font-size: 16px;
+        margin-top: 12px;
+      }
+
+      /* Footer */
+      footer {
+        padding: 12px;
+        font-size: 12px;
+      }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 480px) {
+      nav {
+        padding: 8px 10px;
+      }
+
+      nav .logo {
+        font-size: 16px;
+      }
+
+      nav ul li {
+        margin: 0 6px 4px;
+      }
+
+      nav ul li a {
+        font-size: 12px;
+      }
+
+      .signup-container {
+        padding: 15px 10px;
+      }
+
+      .signup-box {
+        padding: 20px 15px;
+      }
+
+      h2 {
+        font-size: 20px;
+      }
+
+      .input-field {
+        padding: 12px;
+        font-size: 14px;
+      }
+
+      .btn {
+        padding: 12px;
+        font-size: 14px;
+      }
+
+      #otp-status {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">MediDrone</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="signup.html">Signup</a></li>
+    </ul>
+  </nav>
+
+  <!-- Signup Form -->
+  <div class="signup-container">
+    <div class="signup-box">
+      <h2>Create Account</h2>
+      <input type="text" id="firstName" class="input-field" placeholder="First Name">
+      <input type="text" id="lastName" class="input-field" placeholder="Last Name">
+      <input type="email" id="email" class="input-field" placeholder="Email">
+      <input type="text" id="phone" class="input-field" placeholder="Phone (+91...)">
+      <input type="password" id="password" class="input-field" placeholder="Set Password">
+      <input type="password" id="confirmPassword" class="input-field" placeholder="Confirm Password">
+
+      <button class="btn" onclick="sendOTP()">Send OTP</button>
+      <div id="otp-status"></div>
+
+      <input type="text" id="otp" class="input-field" placeholder="Enter OTP" style="display:none;">
+      <button class="btn" id="signupBtn" onclick="verifyOTP()" style="display:none;">Verify & Sign Up</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 MediDrone. Delivering Health with Drones 🚁
+  </footer>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Firebase imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // Firebase config (replace with your firebase.js values)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCq1553dsBtoSugXAmxnSm-JoBdYZmOzCs",
+      authDomain: "medidrone-be1bc.firebaseapp.com",
+      projectId: "medidrone-be1bc",
+      storageBucket: "medidrone-be1bc.appspot.com",
+      messagingSenderId: "501909185674",
+      appId: "1:501909185674:web:19f1211899e29d3505f973",
+      measurementId: "G-8DGENYJYGJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // ✅ Init EmailJS
+    (function () {
+      emailjs.init("NtshG7u-8ypT4TRDc"); // replace
+    })();
+
+    let generatedOTP = null;
+
+    window.sendOTP = function () {
+      const email = document.getElementById("email").value;
+      const firstName = document.getElementById("firstName").value;
+
+      if (!email) { alert("Please enter your email first."); return; }
+
+      generatedOTP = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+
+      emailjs.send("service_iicat0t", "template_fox3w6p", {
+        to_name: firstName || "User",
+        to_email: email,
+        otp: generatedOTP
+      }).then(() => {
+        document.getElementById("otp-status").innerHTML = "<span style='color:green'>✅ OTP sent to email</span>";
+        document.getElementById("otp").style.display = "block";
+        document.getElementById("signupBtn").style.display = "block";
+      }).catch(err => {
+        alert("Failed to send OTP: " + JSON.stringify(err));
+      });
+    }
+
+    window.verifyOTP = async function () {
+      const enteredOTP = document.getElementById("otp").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const phone = document.getElementById("phone").value;
+      const firstName = document.getElementById("firstName").value;
+      const lastName = document.getElementById("lastName").value;
+
+      if (password !== confirmPassword) { alert("Passwords do not match!"); return; }
+      if (parseInt(enteredOTP) !== generatedOTP) { alert("❌ Invalid OTP!"); return; }
+
+      try {
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCred.user;
+
+        await setDoc(doc(db, "users", user.uid), {
+          firstName, lastName, email, phone, createdAt: new Date()
+        });
+
+        // Send welcome email after successful signup
+        emailjs.send("service_iicat0t", "template_aekdjlb", {
+          to_name: firstName || "User",
+          to_email: email,
+          user_name: firstName + " " + lastName
+        }).then(() => {
+          console.log("Welcome email sent successfully");
+        }).catch(err => {
+          console.log("Failed to send welcome email:", err);
+        });
+
+        alert("✅ Signup successful!");
+        window.location.href = "index.html";
+      } catch (error) {
+        alert("❌ Firebase Error: " + error.message);
+      }
+    }
+  </script>
+</body>
+
+</html>

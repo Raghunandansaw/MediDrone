@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediDrone - Cart</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    /* Specific overrides */
+    .qty-input {
+      width: 70px;
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 50px 20px;
+      background: white;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">MediDrone</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="signup.html">Signup</a></li>
+    </ul>
+    <a href="cart.html" class="cart-btn">🛒 Cart</a>
+  </nav>
+
+  <div class="container" style="max-width: 1200px; margin: 40px auto; padding: 0 5%;">
+    <h1>Your Cart</h1>
+    <div id="cart-root"></div>
+  </div>
+
+  <footer>
+    © 2025 MediDrone. Delivering Health with Drones 🚁
+  </footer>
+
+  <script>
+    function getCart() { return JSON.parse(localStorage.getItem('cart') || '[]'); }
+    function setCart(cart) { localStorage.setItem('cart', JSON.stringify(cart)); }
+
+    function calculateTotals(cart) {
+      let subtotal = 0;
+      cart.forEach(item => { subtotal += (Number(item.price) || 0) * (Number(item.qty) || 1); });
+      const delivery = cart.length ? 40 : 0;
+      const total = subtotal + delivery;
+      return { subtotal, delivery, total };
+    }
+
+    function updateQuantity(productId, newQty) {
+      const cart = getCart();
+      const item = cart.find(i => i.id === productId);
+      if (!item) return;
+      const qty = Math.max(1, Number(newQty) || 1);
+      item.qty = qty;
+      setCart(cart);
+      renderCart();
+    }
+
+    function removeItem(productId) {
+      const cart = getCart().filter(i => i.id !== productId);
+      setCart(cart);
+      renderCart();
+    }
+
+    function renderCart() {
+      const root = document.getElementById('cart-root');
+      const cart = getCart();
+      if (!cart.length) {
+        root.innerHTML = `<div class="empty"><p>Your cart is empty.</p><p><a href="index.html" class="checkout-btn">Browse medicines</a></p></div>`;
+        return;
+      }
+
+      const rows = cart.map(item => `
+        <tr>
+          <td data-label="Product">${item.name}</td>
+          <td data-label="Price">₹${Number(item.price).toFixed(2)}</td>
+          <td data-label="Quantity">
+            <input class="qty-input" type="number" min="1" value="${Number(item.qty) || 1}" onchange="updateQuantity('${item.id}', this.value)" />
+          </td>
+          <td data-label="Total">₹${(Number(item.price) * (Number(item.qty) || 1)).toFixed(2)}</td>
+          <td data-label="Action"><button class="remove-btn" onclick="removeItem('${item.id}')">Remove</button></td>
+        </tr>
+      `).join('');
+
+      const totals = calculateTotals(cart);
+
+      root.innerHTML = `
+        <div class="table-responsive">
+          <table class="cart-table">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </div>
+        <div class="cart-summary">
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><strong>Subtotal:</strong> <span>₹${totals.subtotal.toFixed(2)}</span></div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;"><strong>Delivery:</strong> <span>₹${totals.delivery.toFixed(2)}</span></div>
+            <div style="display:flex; justify-content:space-between; font-size:1.2em; border-top:1px solid #eee; padding-top:10px; margin-top:5px;">
+              <strong>Total:</strong> <span style="color:var(--primary);">₹${totals.total.toFixed(2)}</span>
+            </div>
+          <a href="checkout.html" class="checkout-btn">Proceed to Checkout <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      `;
+    }
+
+    window.updateQuantity = updateQuantity;
+    window.removeItem = removeItem;
+    renderCart();
+  </script>
+
+  <script type="module">
+    import { auth } from './js/firebase.js';
+    import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    function setLoggedInNavbar(user) {
+      const navUl = document.querySelector('nav ul');
+      if (!navUl) return;
+      navUl.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="#" id="logoutLink">Logout</a></li>
+      `;
+      const link = document.getElementById('logoutLink');
+      if (link) link.onclick = (e) => { e.preventDefault(); signOut(auth).then(() => location.href = 'login.html'); };
+    }
+    function setLoggedOutNavbar() {
+      const navUl = document.querySelector('nav ul');
+      if (!navUl) return;
+      navUl.innerHTML = `
+        <li><a href="index.html">Home</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="signup.html">Signup</a></li>
+      `;
+    }
+    onAuthStateChanged(auth, (user) => { if (user) setLoggedInNavbar(user); else setLoggedOutNavbar(); });
+  </script>
+
+</body>
+
+</html>

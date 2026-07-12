@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MediDrone - Login</title>
+
+  <!-- Font Awesome for Eye Icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Page specific overrides */
+    .login-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      /* Inherits .card styles from style.css */
+      padding: 40px;
+      border-top: 5px solid var(--primary);
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--text-gray);
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 15px;
+    }
+
+    .link a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">MediDrone</div>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="cart.html">Cart</a></li>
+      <li><a href="login.html">Login</a></li>
+      <li><a href="signup.html">Signup</a></li>
+    </ul>
+  </nav>
+
+  <!-- Login Form -->
+  <div class="login-container">
+    <div class="login-box card">
+      <h2>Login</h2>
+      <input type="email" id="loginEmail" class="input-field" placeholder="Email">
+
+      <div class="password-wrapper">
+        <input type="password" id="loginPassword" class="input-field" placeholder="Password">
+        <span class="toggle-password" onclick="togglePassword()">
+          <i id="eyeIcon" class="fa-solid fa-eye"></i>
+        </span>
+      </div>
+
+      <button class="btn" onclick="loginUser()">Login</button>
+      <div class="link">
+        <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    © 2025 MediDrone. Delivering Health with Drones 🚁
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    // Firebase config (your project)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCq1553dsBtoSugXAmxnSm-JoBdYZmOzCs",
+      authDomain: "medidrone-be1bc.firebaseapp.com",
+      projectId: "medidrone-be1bc",
+      storageBucket: "medidrone-be1bc.appspot.com",
+      messagingSenderId: "501909185674",
+      appId: "1:501909185674:web:19f1211899e29d3505f973",
+      measurementId: "G-8DGENYJYGJ"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // ✅ Login Function
+    window.loginUser = async function () {
+      const email = document.getElementById("loginEmail").value;
+      const password = document.getElementById("loginPassword").value;
+
+      if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("✅ Login successful!");
+        window.location.href = "dashboard.html"; // redirect after login
+      } catch (error) {
+        alert("❌ Login Failed: " + error.code + " - " + error.message);
+        console.error("Login error:", error.code, error.message);
+      }
+    }
+  </script>
+
+  <!-- Password Toggle -->
+  <script>
+    function togglePassword() {
+      const pwdField = document.getElementById("loginPassword");
+      const eyeIcon = document.getElementById("eyeIcon");
+
+      if (pwdField.type === "password") {
+        pwdField.type = "text";
+        eyeIcon.classList.remove("fa-eye");
+        eyeIcon.classList.add("fa-eye-slash");
+      } else {
+        pwdField.type = "password";
+        eyeIcon.classList.remove("fa-eye-slash");
+        eyeIcon.classList.add("fa-eye");
+      }
+    }
+  </script>
+</body>
+
+</html>

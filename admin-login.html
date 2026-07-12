@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediDrone - Admin Login</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Specific overrides */
+    body {
+      /* display: flex; inherited from style.css which is column */
+      /* justify-content: center;  <-- REMOVED to allow footer to stick */
+      /* align-items: center;  <-- REMOVED to allow full width footer */
+      min-height: 100vh;
+      background: #fff0cc;
+      /* Fallback */
+      background: linear-gradient(135deg, var(--bg-cream), var(--bg-light));
+    }
+
+    .login-container {
+      width: 100%;
+      padding: 0 20px;
+      /* Make this container fill the space between header (if any) and footer */
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      /* Vertically center the box */
+      align-items: center;
+      /* Horizontally center the box */
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      padding: 30px;
+      border-top: 5px solid var(--primary);
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+
+    /* Input consistency with style.css is clear, but adding margin wrapper */
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: var(--text-gray);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="login-box card">
+      <h2>Admin Login</h2>
+      <div class="input-group">
+        <label>User ID</label>
+        <input id="adminUser" class="input" placeholder="Enter user id" />
+      </div>
+      <div class="input-group">
+        <label>Password</label>
+        <input id="adminPass" type="password" class="input" placeholder="Enter password" />
+      </div>
+      <button id="loginBtn" class="btn btn-primary btn-block">Login</button>
+      <div id="msg" class="info"></div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 MediDrone. Delivering Health with Drones 🚁
+  </footer>
+
+  <script type="module">
+    import { auth } from './js/firebase.js';
+    import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+    document.getElementById('loginBtn').addEventListener('click', async function () {
+      let u = document.getElementById('adminUser').value.trim();
+      const p = document.getElementById('adminPass').value.trim();
+      const msg = document.getElementById('msg');
+
+      // Auto-map the generic ID to the actual email for Firebase Auth
+      if (u.toLowerCase() === 'medidrone') {
+        u = 'explore.medidrone@gmail.com';
+      }
+
+      if (!u || !p) {
+        msg.style.color = 'crimson'; msg.textContent = '❌ Please enter User ID and Password';
+        return;
+      }
+
+      msg.style.color = '#777'; msg.textContent = 'Authenticating...';
+
+      try {
+        await signInWithEmailAndPassword(auth, u, p);
+
+        // Success
+        localStorage.setItem('isAdmin', 'true');
+        msg.style.color = 'green'; msg.textContent = '✅ Login successful. Redirecting...';
+        setTimeout(() => { window.location.href = 'admin.html'; }, 800);
+
+      } catch (error) {
+        console.error('Login Error:', error);
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+          msg.style.color = 'crimson';
+          msg.innerHTML = '❌ Account not found/Invalid. <br><a href="#" id="createLink" style="color:#ff7b00;font-weight:bold;">Create Admin Account?</a>';
+
+          // Add listener to the dynamic link
+          setTimeout(() => {
+            const link = document.getElementById('createLink');
+            if (link) link.onclick = (e) => { e.preventDefault(); registerAdmin(u, p); };
+          }, 100);
+
+        } else if (error.code === 'auth/too-many-requests') {
+          msg.style.color = 'crimson'; msg.textContent = '❌ Too many attempts. Try later.';
+        } else {
+          msg.style.color = 'crimson'; msg.textContent = '❌ ' + error.message;
+        }
+      }
+    });
+
+    async function registerAdmin(email, password) {
+      const msg = document.getElementById('msg');
+      msg.style.color = '#777'; msg.textContent = 'Creating Admin Account...';
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        localStorage.setItem('isAdmin', 'true');
+        msg.style.color = 'green'; msg.textContent = '✅ Admin Registered! Redirecting...';
+        setTimeout(() => { window.location.href = 'admin.html'; }, 800);
+      } catch (err) {
+        msg.style.color = 'crimson'; msg.textContent = '❌ Register Failed: ' + err.message;
+      }
+    }
+
+    // Allow Enter key to submit
+    document.getElementById('adminPass').addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') document.getElementById('loginBtn').click();
+    });
+  </script>
+</body>
+
+</html>

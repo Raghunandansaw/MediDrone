@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediDrone - Admin Orders</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #fffdf6;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: linear-gradient(90deg, #ff7b00, #ffd60a);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    nav .logo {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      margin: 0 12px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 15px;
+      flex: 1;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      color: #ff7b00;
+      margin: 6px 0 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    th,
+    td {
+      padding: 12px 10px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    td:has(.user-name) {
+      text-align: center;
+    }
+
+    th {
+      background: #fff6e5;
+    }
+
+    .status {
+      font-weight: 700;
+      color: #e36400;
+    }
+
+    .tag {
+      padding: 4px 8px;
+      background: #fff0cc;
+      color: #a85000;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    .user-name {
+      display: inline-block;
+      padding: 6px 12px;
+      background: #e8f4fd;
+      color: #0066cc;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .row-actions button {
+      background: #ff7b00;
+      color: #fff;
+      border: none;
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .row-actions button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .row-actions button.completed {
+      background: #28a745 !important;
+      color: #fff !important;
+    }
+
+    .payment-verify-btn {
+      padding: 6px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .payment-verify-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    button.secondary {
+      background: #888;
+    }
+
+    .filter {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin: 10px 0 16px;
+    }
+
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      margin-top: auto;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .close {
+      color: #aaa;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #000;
+    }
+
+    .detail-section {
+      margin-bottom: 16px;
+    }
+
+    .detail-section h4 {
+      color: #ff7b00;
+      margin: 0 0 8px;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      color: #555;
+    }
+
+    .detail-value {
+      color: #333;
+    }
+
+    .items-list {
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+
+      /* Navigation */
+      nav {
+        padding: 10px 15px;
+        flex-wrap: wrap;
+      }
+
+      nav .logo {
+        font-size: 18px;
+      }
+
+      nav ul {
+        margin-top: 8px;
+        width: 100%;
+        justify-content: center;
+      }
+
+      nav ul li {
+        margin: 0 8px;
+      }
+
+      nav ul li a {
+        font-size: 14px;
+      }
+
+      /* Container */
+      .container {
+        margin: 15px auto;
+        padding: 0 10px;
+      }
+
+      /* Filter */
+      .filter {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        margin: 10px 0;
+      }
+
+      .filter label {
+        font-weight: bold;
+        color: #ff7b00;
+      }
+
+      .filter select,
+      .filter button {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+      }
+
+      /* Table - Convert to Cards on Mobile */
+      table,
+      thead,
+      tbody,
+      th,
+      td,
+      tr {
+        display: block;
+      }
+
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      tr {
+        background: #fff;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        border: 1px solid #eee;
+      }
+
+      td {
+        border: none;
+        position: relative;
+        padding: 8px 0;
+        padding-left: 50%;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: bold;
+        color: #ff7b00;
+        font-size: 12px;
+      }
+
+      /* Hide some columns on very small screens */
+      td:nth-of-type(1):before {
+        content: "Order ID:";
+      }
+
+      td:nth-of-type(2):before {
+        content: "User:";
+      }
+
+      td:nth-of-type(3):before {
+        content: "Items:";
+      }
+
+      td:nth-of-type(4):before {
+        content: "Total:";
+      }
+
+      td:nth-of-type(5):before {
+        content: "Status:";
+      }
+
+      td:nth-of-type(6):before {
+        content: "Payment:";
+      }
+
+      td:nth-of-type(7):before {
+        content: "Verified:";
+      }
+
+      td:nth-of-type(8):before {
+        content: "Placed:";
+      }
+
+      td:nth-of-type(9):before {
+        content: "Actions:";
+      }
+
+      /* Action buttons */
+      .row-actions {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 10px;
+        padding-left: 0 !important;
+      }
+
+      .row-actions:before {
+        display: none;
+      }
+
+      .row-actions button {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        margin: 2px 0;
+      }
+
+      /* Modal adjustments */
+      .modal-content {
+        margin: 10% auto;
+        width: 95%;
+        max-width: none;
+        padding: 15px;
+        max-height: 85vh;
+      }
+
+      .modal-header h3 {
+        font-size: 18px;
+      }
+
+      .close {
+        font-size: 24px;
+      }
+
+      /* Detail sections */
+      .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 8px 0;
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+
+      .detail-label {
+        font-size: 12px;
+        color: #ff7b00;
+        margin-bottom: 4px;
+        font-weight: bold;
+      }
+
+      .detail-value {
+        font-size: 14px;
+        color: #333;
+        word-break: break-word;
+      }
+
+      /* Items list */
+      .items-list {
+        padding: 10px;
+      }
+
+      .item-row {
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 6px 0;
+        padding: 6px 0;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      /* OTP Modal */
+      #otpDetails input {
+        font-size: 18px;
+        padding: 15px;
+        text-align: center;
+        letter-spacing: 2px;
+      }
+
+      #otpDetails button {
+        padding: 12px;
+        font-size: 16px;
+        margin: 5px 0;
+      }
+
+      /* Status tags */
+      .tag {
+        display: inline-block;
+        margin: 2px 0;
+        padding: 6px 10px;
+        font-size: 11px;
+      }
+
+      /* User name styling for mobile */
+      .user-name {
+        display: block;
+        padding: 8px 12px;
+        background: #e8f4fd;
+        color: #0066cc;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
+        text-align: center;
+        min-width: auto;
+        width: 100%;
+        margin: 4px 0;
+      }
+
+      /* Payment verification */
+      .payment-verify-btn {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        font-size: 14px;
+      }
+    }
+
+    /* Extra small screens */
+    @media (max-width: 480px) {
+      nav {
+        padding: 8px 10px;
+      }
+
+      nav .logo {
+        font-size: 16px;
+      }
+
+      nav ul li {
+        margin: 0 5px;
+      }
+
+      nav ul li a {
+        font-size: 12px;
+      }
+
+      .container {
+        padding: 0 5px;
+      }
+
+      h2 {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+
+      tr {
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      td {
+        padding: 6px 0;
+        padding-left: 45%;
+      }
+
+      td:before {
+        font-size: 11px;
+      }
+
+      .modal-content {
+        margin: 5% auto;
+        width: 98%;
+        padding: 10px;
+      }
+
+      .row-actions button {
+        padding: 8px;
+        font-size: 12px;
+      }
+    }
+
+    /* Landscape orientation adjustments */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .modal-content {
+        margin: 2% auto;
+        max-height: 95vh;
+      }
+
+      nav {
+        padding: 8px 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">MediDrone</div>
+    <ul>
+      <li><a href="admin.html">Admin Orders</a></li>
+      <li><a href="#" id="adminLogout">Admin Logout</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <h2>Admin - Manage Orders</h2>
+
+    <div class="filter">
+      <label>Status</label>
+      <select id="statusFilter">
+        <option value="all">All</option>
+        <option value="Pending">Pending</option>
+        <option value="Verify Payment">Verify Payment</option>
+        <option value="Processing">Processing</option>
+        <option value="Shipped">Shipped</option>
+        <option value="Reached">Reached</option>
+        <option value="Delivered">Delivered</option>
+        <option value="Cancelled">Cancelled</option>
+      </select>
+      <button id="refreshBtn">Refresh</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>User</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Payment Status</th>
+          <th>Verification</th>
+          <th>Placed</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="ordersBody"></tbody>
+    </table>
+    <div id="feedback" style="margin-top:10px;color:#444;"></div>
+  </div>
+
+  <!-- Order Details Modal -->
+  <div id="orderModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Order Details</h3>
+        <span class="close">&times;</span>
+      </div>
+      <div id="orderDetails"></div>
+    </div>
+  </div>
+
+  <!-- OTP Verification Modal -->
+  <div id="otpModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>OTP Verification</h3>
+        <span class="close-otp">&times;</span>
+      </div>
+      <div id="otpDetails">
+        <p>Please enter the 6-digit OTP sent to the customer's email:</p>
+        <input type="text" id="otpInput" placeholder="Enter OTP" maxlength="6"
+          style="width:100%; padding:12px; margin:10px 0; border:1px solid #ccc; border-radius:8px; font-size:16px; text-align:center;">
+        <div style="display:flex; gap:10px; margin-top:15px;">
+          <button id="verifyOTPBtn"
+            style="flex:1; background:#28a745; color:white; border:none; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">Verify
+            OTP</button>
+          <button id="resendOTPBtn"
+            style="flex:1; background:#ffc107; color:black; border:none; padding:12px; border-radius:8px; font-weight:bold; cursor:pointer;">Resend
+            OTP</button>
+        </div>
+        <div id="otpFeedback" style="margin-top:10px; text-align:center;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Cancellation Modal -->
+  <div id="cancelModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Cancel Order</h3>
+        <span class="close-cancel">&times;</span>
+      </div>
+      <div id="cancelDetails">
+        <p style="margin-bottom: 20px; color: #666;">Please select the reason for cancelling this order:</p>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 10px; font-weight: bold; color: #333;">Cancellation
+            Reason:</label>
+          <select id="cancelReason"
+            style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; margin-bottom: 15px;">
+            <option value="">Select a reason...</option>
+            <option value="Customer Request">Customer Request</option>
+            <option value="Payment Failed">Payment Failed</option>
+            <option value="Payment Not Received">Payment Not Received</option>
+            <option value="Out of Stock">Out of Stock</option>
+            <option value="Delivery Area Not Covered">Delivery Area Not Covered</option>
+            <option value="Technical Issues">Technical Issues</option>
+            <option value="Weather Conditions">Weather Conditions</option>
+            <option value="Drone Maintenance">Drone Maintenance</option>
+            <option value="Customer Not Available">Customer Not Available</option>
+            <option value="Address Issues">Address Issues</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 10px; font-weight: bold; color: #333;">Additional Notes
+            (Optional):</label>
+          <textarea id="cancelNotes" placeholder="Add any additional details about the cancellation..."
+            style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; min-height: 80px; resize: vertical; box-sizing: border-box;"></textarea>
+        </div>
+
+        <div
+          style="margin-bottom: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
+          <label style="display: flex; align-items: center; cursor: pointer; font-weight: bold; color: #333;">
+            <input type="checkbox" id="refundEligible" style="margin-right: 10px; transform: scale(1.2);">
+            Customer is eligible for refund
+          </label>
+          <div id="refundMessage"
+            style="margin-top: 10px; padding: 10px; background-color: #d4edda; border: 1px solid #c3e6cb; border-radius: 6px; color: #155724; font-size: 14px; display: none;">
+            <strong>Refund Information:</strong> You will receive a refund back to your original payment method within 3
+            business days.
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+          <button id="confirmCancelBtn"
+            style="flex: 1; background: #dc3545; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Confirm
+            Cancellation</button>
+          <button id="cancelCancelBtn"
+            style="flex: 1; background: #6c757d; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">Cancel</button>
+        </div>
+        <div id="cancelFeedback" style="margin-top: 10px; text-align: center;"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © 2025 MediDrone. Delivering Health with Drones 🚁
+  </footer>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script type="module">
+    import { auth, db } from './js/firebase.js';
+    import { onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    import { collection, onSnapshot, query, orderBy, updateDoc, doc, setDoc, getDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+    const bodyEl = document.getElementById('ordersBody');
+    const feedback = document.getElementById('feedback');
+    const statusFilter = document.getElementById('statusFilter');
+    const refreshBtn = document.getElementById('refreshBtn');
+
+    // Initialize EmailJS
+    emailjs.init('4vGW_GmCVR7j2pf3h'); // Your EmailJS public key
+
+    // Test function to verify EmailJS connection
+    async function testEmailJSConnection() {
+      try {
+        console.log('=== TESTING EMAILJS CONNECTION ===');
+        console.log('EmailJS object:', typeof emailjs);
+        console.log('EmailJS init status:', emailjs);
+
+        const testParams = {
+          to_email: 'test@example.com',  // This matches your template's {{to_email}}
+          to_name: 'Test User',
+          order_id: 'TEST123',
+          order_date: '01/01/2025',
+          order_time: '10:30:00 AM',
+          delivery_date: '01/01/2025',
+          delivery_time: '2:30:45 PM',
+          total_amount: 'Rs. 100.00',
+          invoice_link: 'https://example.com/test.pdf',
+          company_name: 'MediDrone',
+          company_email: 'explore.medidrone@gmail.com'
+        };
+
+        console.log('Test parameters:', testParams);
+        console.log('Sending test email...');
+
+        const result = await emailjs.send('service_w0hxfgk', 'template_1i4sikb', testParams);
+        console.log('✅ EmailJS test successful:', result);
+        return true;
+      } catch (error) {
+        console.error('❌ EmailJS test failed:', error);
+        console.error('Error details:', {
+          message: error.message,
+          status: error.status,
+          text: error.text,
+          fullError: error
+        });
+        return false;
+      }
+    }
+
+    // Make test function available globally for debugging
+    window.testEmailJS = testEmailJSConnection;
+
+    // Function to manually send invoice email
+    async function sendInvoiceEmailManually(orderId, order) {
+      try {
+        console.log('=== MANUALLY SENDING INVOICE EMAIL ===');
+        console.log('Order ID:', orderId);
+        console.log('Order data:', order);
+
+        if (!order || !order.userEmail) {
+          alert('❌ No email found for this order');
+          return;
+        }
+
+        // Show loading state
+        const feedback = document.getElementById('feedback');
+        feedback.style.color = '#17a2b8';
+        feedback.textContent = `📧 Sending invoice email to ${order.userEmail}...`;
+
+        // Send the email
+        const result = await sendInvoiceEmail(orderId, order);
+
+        if (result.success) {
+          feedback.style.color = 'green';
+          feedback.textContent = `✅ Invoice email sent successfully to ${order.userEmail}`;
+          console.log('✅ Manual invoice email sent successfully');
+        } else {
+          feedback.style.color = 'red';
+          feedback.textContent = `❌ Failed to send invoice email: ${result.message}`;
+          console.error('❌ Manual invoice email failed:', result.message);
+        }
+
+      } catch (error) {
+        console.error('❌ Error in manual email sending:', error);
+        const feedback = document.getElementById('feedback');
+        feedback.style.color = 'red';
+        feedback.textContent = `❌ Error sending invoice email: ${error.message}`;
+      }
+    }
+
+    // Function to send invoice email when order is delivered
+    async function sendInvoiceEmail(orderId, order) {
+      try {
+        console.log('=== SENDING INVOICE EMAIL ===');
+        console.log('Order ID:', orderId);
+        console.log('Order data:', order);
+
+        if (!order || !order.userEmail) {
+          console.error('❌ No email found for this order');
+          return { success: false, message: 'No email found for this order' };
+        }
+
+        console.log('Customer email:', order.userEmail);
+        console.log('Customer name:', order.fullName);
+
+        // Generate invoice PDF and get download link
+        console.log('Generating invoice PDF...');
+        const invoiceData = await generateInvoiceForEmail(orderId, order);
+        console.log('Invoice data generated:', invoiceData);
+
+        // Prepare email parameters - using {{to_email}} as per your template
+        const emailParams = {
+          to_email: order.userEmail,  // This matches your template's {{to_email}}
+          to_name: order.fullName || 'Customer',
+          order_id: orderId,
+          order_date: new Date(order.createdAt?.toDate?.() || order.createdAt).toLocaleDateString('en-IN'),
+          order_time: new Date(order.createdAt?.toDate?.() || order.createdAt).toLocaleTimeString('en-IN', { hour12: true }),
+          delivery_date: order.deliveryDate || new Date().toLocaleDateString('en-IN'),
+          delivery_time: order.deliveryTime || new Date().toLocaleTimeString('en-IN', { hour12: true }),
+          total_amount: `Rs. ${(order.amounts?.total || 0).toFixed(2)}`,
+          invoice_link: invoiceData.downloadUrl,
+          company_name: 'MediDrone',
+          company_email: 'explore.medidrone@gmail.com'
+        };
+
+        console.log('Email parameters:', emailParams);
+        console.log('Sending email with service_w0hxfgk and template_1i4sikb...');
+
+        // Validate EmailJS is loaded
+        if (typeof emailjs === 'undefined') {
+          throw new Error('EmailJS library not loaded');
+        }
+
+        // Validate service and template IDs
+        if (!emailParams.to_email) {
+          throw new Error('Recipient email is required');
+        }
+
+        console.log('About to call emailjs.send...');
+
+        // Send email using EmailJS (without attachment)
+        const result = await emailjs.send('service_w0hxfgk', 'template_1i4sikb', emailParams);
+
+        console.log('✅ Invoice email sent successfully:', result);
+        return { success: true, message: 'Invoice email sent successfully!' };
+
+      } catch (error) {
+        console.error('❌ Error sending invoice email:', error);
+        console.error('Error details:', {
+          message: error.message,
+          status: error.status,
+          text: error.text,
+          fullError: error
+        });
+
+        // Better error message handling
+        let errorMessage = 'Unknown error occurred';
+        if (error.message) {
+          errorMessage = error.message;
+        } else if (error.text) {
+          errorMessage = error.text;
+        } else if (error.status) {
+          errorMessage = `HTTP ${error.status} error`;
+        } else if (typeof error === 'string') {
+          errorMessage = error;
+        }
+
+        return { success: false, message: 'Failed to send invoice email: ' + errorMessage };
+      }
+    }
+
+    // Function to generate invoice and create download link
+    async function generateInvoiceForEmail(orderId, order) {
+      try {
+        // Generate the PDF (same as existing function)
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Set up colors
+        const primaryColor = [255, 123, 0];
+        const darkColor = [51, 51, 51];
+        const lightGray = [245, 245, 245];
+
+        // Helper functions
+        function formatDate(date) {
+          if (!date) return 'N/A';
+          try {
+            const d = date.toDate ? date.toDate() : new Date(date);
+            return d.toLocaleDateString('en-IN');
+          } catch (e) {
+            return 'N/A';
+          }
+        }
+
+        function formatDateTime(date) {
+          if (!date) return 'N/A';
+          try {
+            const d = date.toDate ? date.toDate() : new Date(date);
+            return d.toLocaleString('en-IN', { hour12: true });
+          } catch (e) {
+            return 'N/A';
+          }
+        }
+
+        function formatCurrency(amount) {
+          const numAmount = Number(amount);
+          if (isNaN(numAmount)) return 'Rs. 0.00';
+          return `Rs. ${numAmount.toFixed(2)}`;
+        }
+
+        let yPosition = 20;
+
+        // Header
+        doc.setFillColor(...primaryColor);
+        doc.rect(0, 0, 210, 30, 'F');
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(24);
+        doc.setFont('helvetica', 'bold');
+        doc.text('MediDrone', 20, 20);
+
+        doc.setFontSize(10);
+        doc.text('Delivering Health with Drones', 20, 26);
+
+        yPosition = 50;
+
+        // Invoice Title
+        doc.setTextColor(...darkColor);
+        doc.setFontSize(20);
+        doc.setFont('helvetica', 'bold');
+        doc.text('INVOICE', 20, yPosition);
+
+        yPosition += 20;
+
+        // Invoice Details
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Invoice Details', 20, yPosition);
+
+        yPosition += 10;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+
+        const invoiceDetails = [
+          ['Invoice No:', orderId],
+          ['Invoice Date:', new Date().toLocaleDateString('en-IN')],
+          ['Order Date:', formatDate(order.createdAt)],
+          ['Order Time:', formatDateTime(order.createdAt)],
+          ['Delivery Date:', order.deliveryDate || formatDate(order.deliveredAt) || 'N/A'],
+          ['Delivery Time:', order.deliveryTime || (order.deliveredAt ? formatDateTime(order.deliveredAt) : 'N/A')],
+          ['Status:', order.status || 'Delivered'],
+          ['Payment:', order.paymentVerified ? 'Verified' : 'Pending']
+        ];
+
+        invoiceDetails.forEach(([label, value]) => {
+          doc.setFont('helvetica', 'bold');
+          doc.text(label, 20, yPosition);
+          doc.setFont('helvetica', 'normal');
+          doc.text(value, 80, yPosition);
+          yPosition += 6;
+        });
+
+        yPosition += 10;
+
+        // Customer Details
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.text('Customer Details', 20, yPosition);
+
+        yPosition += 10;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+
+        const customerDetails = [
+          ['Name:', order.fullName || 'N/A'],
+          ['Email:', order.userEmail || 'N/A'],
+          ['Phone:', order.phone || 'N/A'],
+          ['Address:', order.address || 'N/A']
+        ];
+
+        customerDetails.forEach(([label, value]) => {
+          doc.setFont('helvetica', 'bold');
+          doc.text(label, 20, yPosition);
+          doc.setFont('helvetica', 'normal');
+          doc.text(value, 80, yPosition);
+          yPosition += 6;
+        });
+
+        yPosition += 15;
+
+        // Items Table
+        doc.setFillColor(...lightGray);
+        doc.rect(20, yPosition - 5, 170, 10, 'F');
+
+        doc.setTextColor(...darkColor);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+
+        doc.text('Item', 25, yPosition);
+        doc.text('Qty', 100, yPosition);
+        doc.text('Price', 130, yPosition);
+        doc.text('Total', 170, yPosition);
+
+        yPosition += 10;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...darkColor);
+
+        if (order.items && Array.isArray(order.items)) {
+          order.items.forEach(item => {
+            const itemName = item.name || 'Unknown Item';
+            const quantity = Number(item.qty) || 1;
+            const price = Number(item.price) || 0;
+            const total = price * quantity;
+
+            doc.text(itemName, 25, yPosition);
+            doc.text(quantity.toString(), 100, yPosition);
+            doc.text(formatCurrency(price), 130, yPosition);
+            doc.text(formatCurrency(total), 170, yPosition);
+
+            yPosition += 8;
+          });
+        } else {
+          doc.text('No items found', 25, yPosition);
+          yPosition += 8;
+        }
+
+        yPosition += 10;
+
+        // Total Section
+        const subtotal = order.amounts?.subtotal || 0;
+        const delivery = order.amounts?.delivery || 0;
+        const tax = order.amounts?.tax || 0;
+        const grandTotal = order.amounts?.total || 0;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+
+        doc.text('Subtotal:', 130, yPosition);
+        doc.text(formatCurrency(subtotal), 170, yPosition);
+        yPosition += 8;
+
+        doc.text('Delivery Fee:', 130, yPosition);
+        doc.text(formatCurrency(delivery), 170, yPosition);
+        yPosition += 8;
+
+        doc.text('Tax:', 130, yPosition);
+        doc.text(formatCurrency(tax), 170, yPosition);
+        yPosition += 8;
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.text('Grand Total:', 130, yPosition);
+        doc.text(formatCurrency(grandTotal), 170, yPosition);
+
+        yPosition += 20;
+
+        // Footer
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(100, 100, 100);
+
+        doc.text('Thank you for choosing MediDrone!', 20, yPosition);
+        yPosition += 5;
+        doc.text('For any queries, contact us at explore.medidrone@gmail.com', 20, yPosition);
+        yPosition += 5;
+        doc.text('This is a computer-generated invoice.', 20, yPosition);
+
+        // Generate PDF blob and create download URL
+        const pdfBlob = doc.output('blob');
+        const downloadUrl = URL.createObjectURL(pdfBlob);
+
+        return {
+          downloadUrl: downloadUrl,
+          fileName: `Invoice_${orderId}_${new Date().toISOString().split('T')[0]}.pdf`
+        };
+
+      } catch (error) {
+        console.error('Error generating invoice for email:', error);
+        throw error;
+      }
+    }
+
+
+
+    function fmt(ts) { try { return ts?.toDate().toLocaleString('en-IN', { hour12: true }); } catch { return '-'; } }
+
+    // Helper function to get status button HTML
+    function getStatusButton(order, status, step) {
+      const statusSteps = {
+        'Pending': 0,
+        'Verify Payment': 1,
+        'Processing': 2,
+        'Shipped': 3,
+        'Reached': 4,
+        'Delivered': 5,
+        'Cancelled': -1
+      };
+
+      const currentStep = statusSteps[order.status] || 0;
+      const isCompleted = currentStep >= step;
+      const isNext = currentStep === step - 1;
+      const isCancelled = order.status === 'Cancelled';
+
+      if (isCancelled) {
+        return `<button data-id="${order.id}" data-st="${status}" class="status-btn" data-step="${step}" disabled>${status}</button>`;
+      }
+
+      if (isCompleted) {
+        return `<button data-id="${order.id}" data-st="${status}" class="status-btn completed" data-step="${step}" disabled>${status} ✓</button>`;
+      }
+
+      if (isNext) {
+        return `<button data-id="${order.id}" data-st="${status}" class="status-btn" data-step="${step}">${status}</button>`;
+      }
+
+      return `<button data-id="${order.id}" data-st="${status}" class="status-btn" data-step="${step}" disabled>${status}</button>`;
+    }
+
+    // Helper function to get cancel button HTML
+    function getCancelButton(order) {
+      const isCancelled = order.status === 'Cancelled';
+      const isDelivered = order.status === 'Delivered';
+
+      if (isCancelled) {
+        return `<button class="secondary status-btn completed" data-id="${order.id}" data-st="Cancelled" data-step="cancel" disabled>Cancelled ✓</button>`;
+      }
+
+      if (isDelivered) {
+        return `<button class="secondary status-btn" data-id="${order.id}" data-st="Cancelled" data-step="cancel" disabled>Cancel</button>`;
+      }
+
+      return `<button class="secondary status-btn" data-id="${order.id}" data-st="Cancelled" data-step="cancel" data-action="cancel">Cancel</button>`;
+    }
+
+
+
+    // Generate random 6-digit OTP
+    function generateOTP() {
+      return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+
+
+    // Send OTP for delivery verification
+    async function sendOTPForVerification(orderId, order) {
+      if (!order || !order.userEmail) {
+        feedback.style.color = 'crimson';
+        feedback.textContent = '❌ No email found for this order';
+        return;
+      }
+
+      const otp = generateOTP();
+
+      try {
+        feedback.textContent = 'Sending OTP...';
+        feedback.style.color = '#17a2b8';
+
+        // Store OTP in Firestore with expiration (5 minutes)
+        const otpData = {
+          otp: otp,
+          orderId: orderId,
+          email: order.userEmail,
+          expiresAt: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes from now
+          createdAt: new Date()
+        };
+
+        await setDoc(doc(db, 'otp_verifications', orderId), otpData);
+
+        // Send email using EmailJS
+        const emailParams = {
+          to_email: order.userEmail,
+          to_name: order.fullName || 'Customer',
+          otp: otp
+        };
+
+        await emailjs.send('service_x8um55h', 'template_fox3w6p', emailParams);
+
+        feedback.style.color = 'green';
+        feedback.textContent = `✅ OTP sent to ${order.userEmail}. Valid for 5 minutes.`;
+
+        // Show OTP verification modal
+        showOTPVerificationModal(orderId, order);
+
+      } catch (error) {
+        console.error('OTP sending error:', error);
+        feedback.style.color = 'crimson';
+        feedback.textContent = '❌ Failed to send OTP: ' + error.message;
+      }
+    }
+
+
+    // Show cancellation modal
+    function showCancelModal(orderId, order) {
+      document.getElementById('cancelModal').style.display = 'block';
+      document.getElementById('cancelReason').value = '';
+      document.getElementById('cancelNotes').value = '';
+      document.getElementById('refundEligible').checked = false;
+      document.getElementById('refundMessage').style.display = 'none';
+      document.getElementById('cancelFeedback').textContent = '';
+
+      // Set up event listeners
+      const confirmBtn = document.getElementById('confirmCancelBtn');
+      const cancelBtn = document.getElementById('cancelCancelBtn');
+      const closeBtn = document.querySelector('.close-cancel');
+      const refundCheckbox = document.getElementById('refundEligible');
+      const refundMessage = document.getElementById('refundMessage');
+
+      // Handle refund checkbox change
+      refundCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+          refundMessage.style.display = 'block';
+        } else {
+          refundMessage.style.display = 'none';
+        }
+      });
+
+      confirmBtn.onclick = async () => {
+        const reason = document.getElementById('cancelReason').value;
+        const notes = document.getElementById('cancelNotes').value.trim();
+        const refundEligible = document.getElementById('refundEligible').checked;
+
+        if (!reason) {
+          document.getElementById('cancelFeedback').textContent = 'Please select a cancellation reason.';
+          document.getElementById('cancelFeedback').style.color = '#dc3545';
+          return;
+        }
+
+        try {
+          confirmBtn.disabled = true;
+          confirmBtn.textContent = 'Cancelling...';
+
+          // Update order with cancellation details
+          const updateData = {
+            status: 'Cancelled',
+            cancelledAt: serverTimestamp(),
+            cancellationDetails: {
+              reason: reason,
+              notes: notes,
+              cancelledBy: 'admin',
+              refundEligible: refundEligible
+            }
+          };
+
+          await updateDoc(doc(db, 'orders', orderId), updateData);
+
+          document.getElementById('cancelFeedback').textContent = '✅ Order cancelled successfully!';
+          document.getElementById('cancelFeedback').style.color = '#28a745';
+
+          // Close modal after 2 seconds
+          setTimeout(() => {
+            document.getElementById('cancelModal').style.display = 'none';
+            feedback.style.color = 'green';
+            feedback.textContent = `✅ Order ${orderId} cancelled successfully`;
+          }, 2000);
+
+        } catch (error) {
+          document.getElementById('cancelFeedback').textContent = '❌ Failed to cancel order: ' + error.message;
+          document.getElementById('cancelFeedback').style.color = '#dc3545';
+          confirmBtn.disabled = false;
+          confirmBtn.textContent = 'Confirm Cancellation';
+        }
+      };
+
+      cancelBtn.onclick = () => {
+        document.getElementById('cancelModal').style.display = 'none';
+      };
+
+      closeBtn.onclick = () => {
+        document.getElementById('cancelModal').style.display = 'none';
+      };
+    }
+
+    // Show OTP verification modal
+    function showOTPVerificationModal(orderId, order) {
+      document.getElementById('otpModal').style.display = 'block';
+      document.getElementById('otpInput').value = '';
+      document.getElementById('otpFeedback').textContent = '';
+
+      // Set up event listeners
+      const verifyBtn = document.getElementById('verifyOTPBtn');
+      const resendBtn = document.getElementById('resendOTPBtn');
+      const otpInput = document.getElementById('otpInput');
+
+      // Verify OTP
+      verifyBtn.onclick = async () => {
+        const enteredOTP = otpInput.value.trim();
+        if (enteredOTP.length !== 6) {
+          document.getElementById('otpFeedback').textContent = 'Please enter a 6-digit OTP';
+          document.getElementById('otpFeedback').style.color = '#dc3545';
+          return;
+        }
+
+        try {
+          // Get stored OTP from Firestore
+          const otpDoc = await getDoc(doc(db, 'otp_verifications', orderId));
+          if (!otpDoc.exists()) {
+            document.getElementById('otpFeedback').textContent = 'OTP not found or expired';
+            document.getElementById('otpFeedback').style.color = '#dc3545';
+            return;
+          }
+
+          const otpData = otpDoc.data();
+          const now = new Date();
+          const expiresAt = otpData.expiresAt.toDate();
+
+          if (now > expiresAt) {
+            document.getElementById('otpFeedback').textContent = 'OTP has expired. Please resend.';
+            document.getElementById('otpFeedback').style.color = '#dc3545';
+            return;
+          }
+
+          if (enteredOTP === otpData.otp) {
+            // OTP is correct - mark order as verified
+            await updateDoc(doc(db, 'orders', orderId), { verified: true });
+
+            document.getElementById('otpFeedback').textContent = '✅ OTP verified successfully!';
+            document.getElementById('otpFeedback').style.color = '#28a745';
+
+            // Close modal after 2 seconds
+            setTimeout(() => {
+              document.getElementById('otpModal').style.display = 'none';
+              feedback.style.color = 'green';
+              feedback.textContent = '✅ Order verified successfully!';
+            }, 2000);
+
+          } else {
+            document.getElementById('otpFeedback').textContent = '❌ Invalid OTP. Please try again.';
+            document.getElementById('otpFeedback').style.color = '#dc3545';
+          }
+
+        } catch (error) {
+          console.error('OTP verification error:', error);
+          document.getElementById('otpFeedback').textContent = 'Error verifying OTP: ' + error.message;
+          document.getElementById('otpFeedback').style.color = '#dc3545';
+        }
+      };
+
+      // Resend OTP
+      resendBtn.onclick = async () => {
+        await sendOTPForVerification(orderId, order);
+        document.getElementById('otpInput').value = '';
+        document.getElementById('otpFeedback').textContent = 'New OTP sent!';
+        document.getElementById('otpFeedback').style.color = '#17a2b8';
+      };
+
+      // Allow Enter key to verify
+      otpInput.onkeypress = (e) => {
+        if (e.key === 'Enter') {
+          verifyBtn.click();
+        }
+      };
+    }
+
+    function render(orders) {
+      console.log('Rendering orders with payment status:', orders.map(o => ({
+        id: o.id,
+        status: o.status,
+        paymentVerified: o.paymentVerified
+      })));
+
+      const selected = statusFilter.value;
+      const filtered = selected === 'all' ? orders : orders.filter(o => (o.status || '') === selected);
+      bodyEl.innerHTML = filtered.map(o => `
+        <tr>
+          <td data-label="Order ID">${o.id}</td>
+          <td data-label="User"><span class="user-name">${o.fullName || o.userEmail || o.userId || ''}</span></td>
+          <td data-label="Items">${o.items.map(i => `${i.name} x ${i.qty}`).join(', ')}</td>
+          <td data-label="Total">₹${(o.amounts?.total || 0).toFixed(2)}</td>
+          <td data-label="Status" class="status">${o.status || '-'}</td>
+          <td data-label="Payment">
+            ${o.paymentVerified ?
+          '<span style="color:#28a745; font-weight:bold;">✓ Verified</span>' :
+          '<span style="color:#dc3545; font-weight:bold;">✗ Not Verified</span>'
+        }
+          </td>
+          <td data-label="Verified">
+            ${(o.status === 'Reached' || o.status === 'Delivered') ?
+          (o.verified ? '<span style="color:#28a745; font-weight:bold;">✓ Verified</span>' : '<span style="color:#dc3545; font-weight:bold;">✗ Not Verified</span>') :
+          '<span style="color:#6c757d;">-</span>'
+        }
+          </td>
+          <td data-label="Placed">${fmt(o.createdAt)}</td>
+          <td data-label="Actions" class="row-actions">
+            ${getStatusButton(o, 'Verify Payment', 1)}
+            ${getStatusButton(o, 'Processing', 2)}
+            ${getStatusButton(o, 'Shipped', 3)}
+            ${getStatusButton(o, 'Reached', 4)}
+            ${getStatusButton(o, 'Delivered', 5)}
+            ${getCancelButton(o)}
+            <button style="background:#17a2b8;" data-id="${o.id}" data-action="view">View Details</button>
+            ${o.status === 'Delivered' ? `<button style="background:#6f42c1;" data-id="${o.id}" data-action="invoice">📄 Invoice</button>` : ''}
+            ${o.status === 'Delivered' ? `<button style="background:#6f42c1;" data-id="${o.id}" data-action="send-email">📧 Send Invoice Email</button>` : ''}
+          </td>
+        </tr>
+      `).join('');
+
+      bodyEl.querySelectorAll('button').forEach(btn => {
+        btn.onclick = async () => {
+          const id = btn.getAttribute('data-id');
+          const action = btn.getAttribute('data-action');
+          const st = btn.getAttribute('data-st');
+          const step = btn.getAttribute('data-step');
+
+          if (action === 'view') {
+            showOrderDetails(id, orders.find(o => o.id === id));
+          } else if (action === 'invoice') {
+            const order = orders.find(o => o.id === id);
+            generateAndDownloadInvoice(id, order);
+          } else if (action === 'send-email') {
+            const order = orders.find(o => o.id === id);
+            sendInvoiceEmailManually(id, order);
+          } else if (action === 'cancel') {
+            const order = orders.find(o => o.id === id);
+            showCancelModal(id, order);
+          } else if (btn.classList.contains('status-btn')) {
+            const order = orders.find(o => o.id === id);
+            const currentStatus = order.status;
+
+            // Define status progression
+            const statusSteps = {
+              'Pending': 0,
+              'Verify Payment': 1,
+              'Processing': 2,
+              'Shipped': 3,
+              'Reached': 4,
+              'Delivered': 5,
+              'Cancelled': -1
+            };
+
+            const currentStep = statusSteps[currentStatus] || 0;
+            const targetStep = step === 'cancel' ? -1 : parseInt(step);
+
+            // Check if the button click is valid (next in sequence or cancel)
+            if (step === 'cancel' || targetStep === currentStep + 1) {
+              try {
+                const updateData = { status: st };
+
+                // Auto-verify payment when verify payment button is clicked
+                if (st === 'Verify Payment') {
+                  console.log('Verify Payment button clicked - auto-verifying payment for order:', id);
+                  updateData.paymentVerified = true;
+                  updateData.paymentVerifiedAt = serverTimestamp();
+                  console.log('Update data for Verify Payment:', updateData);
+                }
+
+                // Order status updated successfully
+                if (st === 'Delivered') {
+                  console.log('Order marked as delivered:', id);
+
+                  // Add delivery date and time
+                  updateData.deliveredAt = serverTimestamp();
+                  updateData.deliveryDate = new Date().toLocaleDateString('en-IN');
+                  updateData.deliveryTime = new Date().toLocaleTimeString('en-IN', { hour12: true });
+
+                  feedback.style.color = 'green';
+                  feedback.textContent = `✅ Order ${id} marked as delivered successfully`;
+                }
+
+                console.log('Updating order with data:', updateData);
+                await updateDoc(doc(db, 'orders', id), updateData);
+                console.log('Firestore update completed for order:', id);
+
+                // Update button appearance
+                btn.style.background = '#28a745';
+                btn.style.color = '#fff';
+                btn.disabled = true;
+                btn.textContent = st + ' ✓';
+
+                // Disable all other status buttons for this order
+                const orderRow = btn.closest('tr');
+                orderRow.querySelectorAll('.status-btn').forEach(otherBtn => {
+                  if (otherBtn !== btn) {
+                    otherBtn.disabled = true;
+                    otherBtn.style.opacity = '0.5';
+                  }
+                });
+
+                feedback.style.color = 'green';
+                if (st === 'Verify Payment') {
+                  feedback.textContent = '✅ Updated order ' + id + ' to ' + st + ' and payment verified';
+                  console.log('Verify Payment completed - payment should be verified now');
+                } else {
+                  feedback.textContent = '✅ Updated order ' + id + ' to ' + st;
+                }
+
+                // Force refresh after a short delay to see the updated data
+                setTimeout(() => {
+                  console.log('Refreshing orders list to show updated payment status');
+                  listen();
+                }, 1000);
+              } catch (e) {
+                feedback.style.color = 'crimson';
+                feedback.textContent = '❌ Update failed: ' + (e.message || e);
+              }
+            } else {
+              feedback.style.color = 'orange';
+              feedback.textContent = '⚠️ Please update status in sequence. Current: ' + currentStatus;
+            }
+          }
+        }
+      });
+    }
+
+    function listen() {
+      feedback.textContent = 'Loading orders...';
+      const qRef = query(collection(db, 'orders'), orderBy('createdAt', 'desc'));
+      onSnapshot(qRef, (snap) => {
+        const orders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        // Additional client-side sorting to ensure latest orders are first
+        const sortedOrders = orders.sort((a, b) => {
+          const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(a.createdAt);
+          const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(b.createdAt);
+          return dateB - dateA;
+        });
+        render(sortedOrders);
+        feedback.textContent = '';
+      }, (error) => {
+        console.error('Admin orders error:', error);
+        feedback.textContent = 'Error loading orders: ' + error.message;
+        feedback.style.color = 'crimson';
+      });
+    }
+
+    async function guard(user) {
+      const adminFlag = localStorage.getItem('isAdmin') === 'true';
+      const adminEmails = ['admin@example.com'];
+      if (adminFlag) return true;
+      if (user && adminEmails.includes(user.email)) return true;
+      alert('Admin access only');
+      window.location.href = 'admin-login.html';
+      return false;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!await guard(user)) return;
+      listen();
+    });
+
+    statusFilter.onchange = listen;
+    refreshBtn.onclick = listen;
+
+    // Modal functions
+    function showOrderDetails(orderId, order) {
+      if (!order) return;
+
+      // Format date properly for modal display
+      function formatDateForModal(ts) {
+        try {
+          if (ts && typeof ts === 'object' && ts.seconds) {
+            // Firestore timestamp object
+            return new Date(ts.seconds * 1000).toLocaleString('en-IN', { hour12: true });
+          } else if (ts && ts.toDate) {
+            // Firestore timestamp with toDate method
+            return ts.toDate().toLocaleString('en-IN', { hour12: true });
+          } else if (ts) {
+            // Regular date
+            return new Date(ts).toLocaleString('en-IN', { hour12: true });
+          }
+          return '-';
+        } catch (e) {
+          return '-';
+        }
+      }
+
+      const detailsHtml = `
+        <div class="detail-section">
+          <h4>Order Information</h4>
+          <div class="detail-row">
+            <span class="detail-label">Order ID:</span>
+            <span class="detail-value">${orderId}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Status:</span>
+            <span class="detail-value" style="color:#e36400; font-weight:700;">${order.status || 'Pending'}${(order.status === 'Reached' || order.status === 'Delivered') && order.verified ? ' ✓ Verified' : ''}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Order Date:</span>
+            <span class="detail-value">${formatDateForModal(order.createdAt)}</span>
+          </div>
+          ${order.status === 'Delivered' && order.deliveredAt ? `
+          <div class="detail-row">
+            <span class="detail-label">Delivery Date:</span>
+            <span class="detail-value">${order.deliveryDate || formatDateForModal(order.deliveredAt)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Delivery Time:</span>
+            <span class="detail-value">${order.deliveryTime || formatDateForModal(order.deliveredAt)}</span>
+          </div>
+          ` : ''}
+          <div class="detail-row">
+            <span class="detail-label">Payment Method:</span>
+            <span class="detail-value">${order.payment || 'Cash on Delivery'}</span>
+          </div>
+          ${order.status === 'Cancelled' && order.cancellationDetails ? `
+          <div class="detail-row">
+            <span class="detail-label">Cancellation Reason:</span>
+            <span class="detail-value" style="color:#dc3545; font-weight:bold;">${order.cancellationDetails.reason}</span>
+          </div>
+          ${order.cancellationDetails.notes ? `
+          <div class="detail-row">
+            <span class="detail-label">Cancellation Notes:</span>
+            <span class="detail-value">${order.cancellationDetails.notes}</span>
+          </div>
+          ` : ''}
+          <div class="detail-row">
+            <span class="detail-label">Cancelled By:</span>
+            <span class="detail-value">${order.cancellationDetails.cancelledBy || 'Admin'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Cancelled At:</span>
+            <span class="detail-value">${formatDateForModal(order.cancelledAt)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Refund Eligible:</span>
+            <span class="detail-value" style="color:${order.cancellationDetails.refundEligible ? '#28a745' : '#dc3545'}; font-weight:bold;">
+              ${order.cancellationDetails.refundEligible ? 'Yes - Refund will be processed within 3 business days' : 'No'}
+            </span>
+          </div>
+          ` : ''}
+        </div>
+
+        ${order.payment === 'UPI' && order.paymentDetails ? `
+        <div class="detail-section">
+          <h4>Payment Details</h4>
+          <div class="detail-row">
+            <span class="detail-label">UPI ID:</span>
+            <span class="detail-value">amankad55@okicici</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">UTR Number:</span>
+            <span class="detail-value">${order.paymentDetails.utrNumber || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Payment Date:</span>
+            <span class="detail-value">${order.paymentDetails.paymentDate || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Payment Time:</span>
+            <span class="detail-value">${order.paymentDetails.paymentTime || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Payee Name:</span>
+            <span class="detail-value">${order.paymentDetails.payeeName || 'N/A'}</span>
+          </div>
+        </div>
+        ` : ''}
+
+        <div class="detail-section">
+          <h4>Customer Information</h4>
+          <div class="detail-row">
+            <span class="detail-label">Name:</span>
+            <span class="detail-value">${order.fullName || '-'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">${order.userEmail || '-'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Phone:</span>
+            <span class="detail-value">${order.phone || '-'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">User ID:</span>
+            <span class="detail-value">${order.userId || '-'}</span>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h4>Delivery Address</h4>
+          <div class="detail-value" style="background:#f9f9f9; padding:12px; border-radius:8px; margin-top:8px;">
+            ${order.address || 'No address provided'}
+          </div>
+          ${order.latitude && order.longitude ? `
+            <div class="detail-row" style="margin-top:8px;">
+              <span class="detail-label">Coordinates:</span>
+              <span class="detail-value">${order.latitude.toFixed(6)}, ${order.longitude.toFixed(6)}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Map Link:</span>
+              <span class="detail-value">
+                <a href="https://www.google.com/maps?q=${order.latitude},${order.longitude}" target="_blank" style="color:#17a2b8; text-decoration:none;">
+                  📍 View on Google Maps
+                </a>
+              </span>
+            </div>
+          ` : ''}
+        </div>
+
+        <div class="detail-section">
+          <h4>Order Items</h4>
+          <div class="items-list">
+            ${order.items.map(item => `
+              <div class="item-row">
+                <span>${item.name} x ${item.qty}</span>
+                <span>₹${(Number(item.price) * Number(item.qty)).toFixed(2)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h4>Order Summary</h4>
+          <div class="detail-row">
+            <span class="detail-label">Items Subtotal:</span>
+            <span class="detail-value">₹${(order.amounts?.subtotal || 0).toFixed(2)}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Delivery Fee:</span>
+            <span class="detail-value">₹${(order.amounts?.delivery || 0).toFixed(2)}</span>
+          </div>
+          <div class="detail-row" style="border-top:1px solid #eee; padding-top:8px; font-weight:700; font-size:16px;">
+            <span class="detail-label">Total Amount:</span>
+            <span class="detail-value" style="color:#e36400;">₹${(order.amounts?.total || 0).toFixed(2)}</span>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('orderDetails').innerHTML = detailsHtml;
+      document.getElementById('orderModal').style.display = 'block';
+    }
+
+    // Generate and Download Invoice PDF
+    function generateAndDownloadInvoice(orderId, order) {
+      try {
+        console.log('Generating invoice PDF for order:', orderId, order);
+
+        if (!order) {
+          alert('Order data not found. Please try again.');
+          return;
+        }
+
+        // Create new PDF document
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Set up colors
+        const primaryColor = [255, 123, 0]; // Orange #ff7b00
+        const darkColor = [51, 51, 51]; // Dark #333
+        const lightGray = [245, 245, 245]; // Light gray
+
+        // Helper function to format date
+        function formatDate(date) {
+          if (!date) return 'N/A';
+          try {
+            const d = date.toDate ? date.toDate() : new Date(date);
+            return d.toLocaleDateString('en-IN');
+          } catch (e) {
+            return 'N/A';
+          }
+        }
+
+        // Helper function to format date and time
+        function formatDateTime(date) {
+          if (!date) return 'N/A';
+          try {
+            const d = date.toDate ? date.toDate() : new Date(date);
+            return d.toLocaleString('en-IN', { hour12: true });
+          } catch (e) {
+            return 'N/A';
+          }
+        }
+
+        // Helper function to format currency
+        function formatCurrency(amount) {
+          const numAmount = Number(amount);
+          if (isNaN(numAmount)) return 'Rs. 0.00';
+          return `Rs. ${numAmount.toFixed(2)}`;
+        }
+
+        let yPosition = 20;
+
+        // Header
+        doc.setFillColor(...primaryColor);
+        doc.rect(0, 0, 210, 30, 'F');
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(24);
+        doc.setFont('helvetica', 'bold');
+        doc.text('MediDrone', 20, 20);
+
+        doc.setFontSize(10);
+        doc.text('Delivering Health with Drones ', 20, 26);
+
+        yPosition = 50;
+
+        // Invoice Title
+        doc.setTextColor(...darkColor);
+        doc.setFontSize(20);
+        doc.setFont('helvetica', 'bold');
+        doc.text('INVOICE', 20, yPosition);
+
+        yPosition += 20;
+
+        // Invoice Details Section
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Invoice Details', 20, yPosition);
+
+        yPosition += 10;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+
+        const invoiceDetails = [
+          ['Invoice No:', orderId],
+          ['Invoice Date:', new Date().toLocaleDateString('en-IN')],
+          ['Order Date:', formatDate(order.createdAt)],
+          ['Order Time:', formatDateTime(order.createdAt)],
+          ['Delivery Date:', order.deliveryDate || formatDate(order.deliveredAt) || 'N/A'],
+          ['Delivery Time:', order.deliveryTime || (order.deliveredAt ? formatDateTime(order.deliveredAt) : 'N/A')],
+          ['Status:', order.status || 'Pending'],
+          ['Payment:', order.paymentVerified ? 'Verified' : 'Pending']
+        ];
+
+        invoiceDetails.forEach(([label, value]) => {
+          doc.setFont('helvetica', 'bold');
+          doc.text(label, 20, yPosition);
+          doc.setFont('helvetica', 'normal');
+          doc.text(value, 80, yPosition);
+          yPosition += 6;
+        });
+
+        yPosition += 10;
+
+        // Customer Details Section
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.text('Customer Details', 20, yPosition);
+
+        yPosition += 10;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+
+        const customerDetails = [
+          ['Name:', order.fullName || 'N/A'],
+          ['Email:', order.userEmail || 'N/A'],
+          ['Phone:', order.phone || 'N/A'],
+          ['Address:', order.address || 'N/A']
+        ];
+
+        customerDetails.forEach(([label, value]) => {
+          doc.setFont('helvetica', 'bold');
+          doc.text(label, 20, yPosition);
+          doc.setFont('helvetica', 'normal');
+          doc.text(value, 80, yPosition);
+          yPosition += 6;
+        });
+
+        yPosition += 15;
+
+        // Items Table Header
+        doc.setFillColor(...lightGray);
+        doc.rect(20, yPosition - 5, 170, 10, 'F');
+
+        doc.setTextColor(...darkColor);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+
+        doc.text('Item', 25, yPosition);
+        doc.text('Qty', 100, yPosition);
+        doc.text('Price', 130, yPosition);
+        doc.text('Total', 170, yPosition);
+
+        yPosition += 10;
+
+        // Items Table Content
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...darkColor);
+
+        if (order.items && Array.isArray(order.items)) {
+          order.items.forEach(item => {
+            const itemName = item.name || 'Unknown Item';
+            const quantity = Number(item.qty) || 1;
+            const price = Number(item.price) || 0;
+            const total = price * quantity;
+
+            // Debug logging
+            console.log('Item data:', { name: itemName, qty: item.qty, price: item.price, calculatedTotal: total });
+
+            doc.text(itemName, 25, yPosition);
+            doc.text(quantity.toString(), 100, yPosition);
+            doc.text(formatCurrency(price), 130, yPosition);
+            doc.text(formatCurrency(total), 170, yPosition);
+
+            yPosition += 8;
+          });
+        } else {
+          doc.text('No items found', 25, yPosition);
+          yPosition += 8;
+        }
+
+        yPosition += 10;
+
+        // Total Section
+        const subtotal = order.amounts?.subtotal || 0;
+        const delivery = order.amounts?.delivery || 0;
+        const tax = order.amounts?.tax || 0;
+        const grandTotal = order.amounts?.total || 0;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+
+        doc.text('Subtotal:', 130, yPosition);
+        doc.text(formatCurrency(subtotal), 170, yPosition);
+        yPosition += 8;
+
+        doc.text('Delivery Fee:', 130, yPosition);
+        doc.text(formatCurrency(delivery), 170, yPosition);
+        yPosition += 8;
+
+        doc.text('Tax:', 130, yPosition);
+        doc.text(formatCurrency(tax), 170, yPosition);
+        yPosition += 8;
+
+        // Grand Total
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.text('Grand Total:', 130, yPosition);
+        doc.text(formatCurrency(grandTotal), 170, yPosition);
+
+        yPosition += 20;
+
+        // Footer
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(100, 100, 100);
+
+        doc.text('Thank you for choosing MediDrone!', 20, yPosition);
+        yPosition += 5;
+        doc.text('For any queries, contact us at explore.medidrone@gmail.com', 20, yPosition);
+        yPosition += 5;
+        doc.text('This is a computer-generated invoice.', 20, yPosition);
+
+        // Download the PDF
+        const fileName = `Invoice_${orderId}_${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.save(fileName);
+
+        console.log('Invoice PDF generated and downloaded successfully');
+
+      } catch (error) {
+        console.error('Error generating invoice PDF:', error);
+        alert('Error generating invoice PDF: ' + error.message);
+      }
+    }
+
+
+
+
+    // Close modals
+    document.querySelector('.close').onclick = function () {
+      document.getElementById('orderModal').style.display = 'none';
+    }
+
+    document.querySelector('.close-otp').onclick = function () {
+      document.getElementById('otpModal').style.display = 'none';
+    }
+
+    document.querySelector('.close-cancel').onclick = function () {
+      document.getElementById('cancelModal').style.display = 'none';
+    }
+
+    window.onclick = function (event) {
+      const orderModal = document.getElementById('orderModal');
+      const otpModal = document.getElementById('otpModal');
+      const cancelModal = document.getElementById('cancelModal');
+      if (event.target === orderModal) {
+        orderModal.style.display = 'none';
+      }
+      if (event.target === otpModal) {
+        otpModal.style.display = 'none';
+      }
+      if (event.target === cancelModal) {
+        cancelModal.style.display = 'none';
+      }
+    }
+  </script>
+  <script>
+    // Local admin logout clears admin flag and returns to admin login
+    const adminLogout = document.getElementById('adminLogout');
+    if (adminLogout) {
+      adminLogout.addEventListener('click', function (e) {
+        e.preventDefault();
+        localStorage.removeItem('isAdmin');
+        window.location.href = 'admin-login.html';
+      });
+    }
+  </script>
+</body>
+
+</html>
