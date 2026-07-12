@@ -495,7 +495,7 @@
     const root = document.getElementById('orders-root');
 
     // Initialize EmailJS
-    emailjs.init('NtshG7u-8ypT4TRDc'); // Your EmailJS public key
+    emailjs.init(''); // Your EmailJS public key
 
     function fmt(ts) { try { return ts?.toDate().toLocaleString('en-IN', { hour12: true }); } catch { return '-'; } }
 
@@ -539,10 +539,10 @@
         };
 
         console.log('Sending email with params:', emailParams);
-        console.log('EmailJS service:', 'service_iicat0t');
-        console.log('EmailJS template:', 'template_aekdjlb');
+        console.log('EmailJS service:', '');
+        console.log('EmailJS template:', '');
 
-        const result = await emailjs.send('service_iicat0t', 'template_aekdjlb', emailParams);
+        const result = await emailjs.send('', '', emailParams);
         console.log('EmailJS send result:', result);
 
         alert(`✅ OTP sent to ${order.userEmail}. Valid for 5 minutes.`);
