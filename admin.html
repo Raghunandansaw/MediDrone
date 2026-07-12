@@ -736,7 +736,7 @@
     const refreshBtn = document.getElementById('refreshBtn');
 
     // Initialize EmailJS
-    emailjs.init('4vGW_GmCVR7j2pf3h'); // Your EmailJS public key
+    emailjs.init(''); // Your EmailJS public key
 
     // Test function to verify EmailJS connection
     async function testEmailJSConnection() {
@@ -762,7 +762,7 @@
         console.log('Test parameters:', testParams);
         console.log('Sending test email...');
 
-        const result = await emailjs.send('service_w0hxfgk', 'template_1i4sikb', testParams);
+        const result = await emailjs.send('', '', testParams);
         console.log('✅ EmailJS test successful:', result);
         return true;
       } catch (error) {
@@ -869,7 +869,7 @@
         console.log('About to call emailjs.send...');
 
         // Send email using EmailJS (without attachment)
-        const result = await emailjs.send('service_w0hxfgk', 'template_1i4sikb', emailParams);
+        const result = await emailjs.send('', '', emailParams);
 
         console.log('✅ Invoice email sent successfully:', result);
         return { success: true, message: 'Invoice email sent successfully!' };
@@ -1203,7 +1203,7 @@
           otp: otp
         };
 
-        await emailjs.send('service_x8um55h', 'template_fox3w6p', emailParams);
+        await emailjs.send('', '', emailParams);
 
         feedback.style.color = 'green';
         feedback.textContent = `✅ OTP sent to ${order.userEmail}. Valid for 5 minutes.`;
